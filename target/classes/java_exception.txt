@@ -1,7 +1,0 @@
-1.所有异常，都继承自java.lang.Throwable类。
-2.Throwable有两个直接子类，Error类和Exception类。
-3.异常可分为执行异常（RuntimeException 是Unchecked Exceptions）和检查异常（Checked Exceptions）
-4.除了runtimeException以外的异常，都属于checkedException，它们都在java.lang库内部定义。Java编译器要求程序必须捕获或声明抛出这种异常。
-5.对于Unchecked Exception，java编译器不要求一定要把它捕获或者继续抛出，但Checked Exceptions要求必须要在方法里面捕获或者继续抛出.
-6.Unchecked Exctptions : NullPointerException,ClassCastException,ArrayIndexsOutOfBoundsException,ArithmeticException
-7.Checked Exceptions : Exception,FileNotFoundException,IOException,SQLException

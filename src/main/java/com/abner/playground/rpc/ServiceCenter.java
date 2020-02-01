@@ -16,7 +16,7 @@ public class ServiceCenter implements Server{
 
 	private static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	
-	private static final HashMap<String, Class> serviceRegistry = new HashMap<String, Class>();
+	private static final HashMap<String, Class> serviceRegistry = new HashMap<>();
 	
 	private static boolean isRunning = false;
 	
