@@ -1,7 +1,5 @@
 package com.abner.playground.designpattern.decorator;
 
-import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
-
 /**
  * client fo decorator pattern
  */
