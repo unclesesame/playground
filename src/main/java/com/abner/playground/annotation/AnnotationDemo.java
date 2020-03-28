@@ -7,7 +7,7 @@ import java.util.Map;
 public class AnnotationDemo {
 	public static void main(String[] args) throws NoSuchFieldException, SecurityException {
 		
-		Map<Integer, String> map =  new HashMap<Integer,String>();
+		Map<Integer, String> map =  new HashMap<>();
 		Class klass = Teacher.class;
 		Field[] fields = klass.getDeclaredFields();
 		System.out.println(klass.getField("sex"));
