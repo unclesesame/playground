@@ -17,5 +17,7 @@ public class ClassLoaderDemo {
         ClassLoader classLoaderForCore = String.class.getClassLoader();
         System.out.println(classLoaderForCore);//null, bootstrapClassLoader for Java Core class.
 
+
+
     }
 }
