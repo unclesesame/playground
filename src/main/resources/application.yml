@@ -1,0 +1,3 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/com/abner/playground/templates/

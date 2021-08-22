@@ -1,0 +1,171 @@
+<html>
+<head>
+    <style type="text/css">
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        .header {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .column {
+            float: left;
+            width: 50%;
+            height: 500px;
+        }
+
+        .left_column {
+            float: left;
+            width: 50%;
+            height: 100%;
+        }
+        .right_column {
+            float: right;
+            width: 50%;
+            height: 100%;
+        }
+
+
+        #div1 {
+            border-style: dotted;
+
+            background: #ccc;
+            color: white;
+            text-align: center;
+        }
+
+        #div2 {
+            border-style: dotted;
+            background: #ccc;
+            color: white;
+            text-align: center;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        #div3 {
+           float: right;
+            background: #f1f1f1;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+        }
+
+    </style>
+    <script>
+        window.onload = function () {
+            var uuz1 = document.getElementById('div1');
+
+            uuz1.ondragenter = function (e) {
+                e.preventDefault();
+            }
+
+            uuz1.ondragover = function (e) {
+                e.preventDefault();
+                this.innerHTML = 'please release';
+            }
+
+            uuz1.ondragleave = function (e) {
+                e.preventDefault();
+                this.innerHTML = 'please drag file here';
+            }
+
+            uuz1.ondrop = function (e) {
+                e.preventDefault();
+
+                var uploadFile = e.dataTransfer.files[0];
+                var formdata = new FormData();
+                var xhr = new XMLHttpRequest();
+                formdata.append('uploadFile', uploadFile);
+                formdata.append('fileType', 'sourceFile');
+                xhr.open("post", "/fileUpload")
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var resultText = this.responseText;
+                            console.info(resultText);
+                        } else {
+                            alert('upload failed');
+                        }
+                    }
+                }
+                xhr.send(formdata);
+            }
+
+            var uuz2 = document.getElementById('div2');
+
+            uuz2.ondragenter = function (e) {
+                e.preventDefault();
+            }
+
+            uuz2.ondragover = function (e) {
+                e.preventDefault();
+                this.innerHTML = 'please release';
+            }
+
+            uuz2.ondragleave = function (e) {
+                e.preventDefault();
+                this.innerHTML = 'please drag file here';
+            }
+
+            uuz2.ondrop = function (e) {
+                e.preventDefault();
+
+                var uploadFile = e.dataTransfer.files[0];
+                var formdata = new FormData();
+                var xhr = new XMLHttpRequest();
+                formdata.append('uploadFile', uploadFile);
+                formdata.append('fileType', 'targetFile');
+                xhr.open("post", "/fileUpload")
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            var resultText = this.responseText;
+                            console.info(resultText);
+                        } else {
+                            alert('upload failed');
+                        }
+                    }
+                }
+                xhr.send(formdata);
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="header">
+    <h1>Comparison tool</h1>
+</div>
+<div class="row">
+    <div class="column">
+        <div id="div1" class="left_column">
+            <h3>Please drag source file here</h3>
+        </div>
+        <div id="div2" class="right_column">
+            <h3>Please drag source file here</h3>
+        </div>
+    </div>
+    <div id="div3" class="column">
+        <h3> download list</h3>
+    </div>
+</div>
+<div class="footer">
+    <h1>底部区域</h1>
+</div>
+</body>
+</html>
