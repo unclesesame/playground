@@ -4,6 +4,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
 import static org.apache.spark.sql.functions.col;
+import static org.apache.spark.sql.functions.*;
 
 public class SparkDemo {
     public static void main(String[] args) {
@@ -13,7 +14,7 @@ public class SparkDemo {
                  .config("master","local")
                  .getOrCreate();
 
-        Dataset<Row> df = spark.read().json("src/main/resources/com/abner/playground/spark/people.json");
+       Dataset<Row> df = spark.read().json("src/main/resources/com/abner/playground/spark/people.json");
          df.show();
          df.printSchema();
          df.select("name").show();
@@ -21,9 +22,7 @@ public class SparkDemo {
          df.filter(col("age").gt(21)).show();
          df.groupBy("age").count().show();
 
-        /**
-         * SQL
-         */
+
         df.createOrReplaceTempView("people");
         Dataset<Row> sqlDF = spark.sql("SELECT * FROM people");
         sqlDF.show();

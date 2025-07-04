@@ -1,6 +1,7 @@
 package com.abner.playground.algorithm.sort;
 
 public class SortingUtil {
+	//every round, put largest to the end
 	public static void bubbleSort(int[] array) {
 		for(int i=0; i < array.length-1; i++){
 			for(int j=0; j < array.length-i-1; j++){
@@ -14,6 +15,7 @@ public class SortingUtil {
 	}
 	
 	public static void selectionSort(int[] array) {
+		//
 		for(int i=0; i < array.length - 1; i++){
 			int k = i;
 			for(int j = k + 1; j < array.length; j++){
@@ -56,8 +58,6 @@ public class SortingUtil {
 			array[high] = array[low];
 		}
 		array[high] = key;
-		/*for(int a:array)
-			System.out.print(a + " ");*/
 		return high;
 	}
 	

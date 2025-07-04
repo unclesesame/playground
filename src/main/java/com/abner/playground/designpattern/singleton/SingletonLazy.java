@@ -2,7 +2,7 @@ package com.abner.playground.designpattern.singleton;
 
 public class SingletonLazy {
 	
-	private static SingletonLazy instance;
+	private static volatile SingletonLazy instance;
 	
 	private SingletonLazy() {
 		
