@@ -31,12 +31,12 @@ class ListNode {
 
 
 
-public class Solution {
+public class GreedySolution {
 
     public static void main(String[] args) {
         //int[] nums = {1, 2, 2, 1, 1, 3};
         String s = "a good   example";
-        Solution solution = new Solution();
+        GreedySolution solution = new GreedySolution();
         // double result = solution.findMaxAverage(nums, 4);
         //solution.reverseWords(s);
         //solution.decodeString("3[a]2[bc]");
@@ -46,13 +46,6 @@ public class Solution {
         solution.nextPermutation(new int[]{3,2,1});
         //System.out.println(ret);
     }
-
-
-
-
-
-
-
 
     public void nextPermutation(int[] nums) {
         int n = nums.length;
@@ -169,64 +162,7 @@ public class Solution {
         return left;
     }
 
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int m= obstacleGrid.length;
-        int n = obstacleGrid[0].length;
 
-        if(obstacleGrid[m-1][n-1] == 1) return 0;
-        //二维dp  f[i][j] 表示从左上角(0,0)到(i,j)位置的路径数量
-        int[][] f = new int[m][n];
-        boolean hasObstacle = false;
-        //初始化边界，首行和首列遇到障碍后均设为0，其他为1
-        for(int i=0; i<m; i++){
-            if( obstacleGrid[i][0] == 1 || hasObstacle){
-                hasObstacle = true;
-                f[i][0] = 0;
-            }else{
-                f[i][0] =1;
-            }
-        }
-        hasObstacle = false;
-        for(int j=0; j<n; j++){
-            if( obstacleGrid[0][j] == 1 || hasObstacle){
-                hasObstacle = true;
-                f[0][j] = 0;
-            }else{
-                f[0][j] = 1;
-            }
-        }
-
-        for(int i=1; i<m; i++){
-            for(int j=1; j<n; j++){
-               int up = obstacleGrid[i-1][j] == 1 ? 0 : f[i-1][j];
-               int left = obstacleGrid[i][j-1] == 1 ? 0 : f[i][j-1];
-                f[i][j] = up + left;
-            }
-        }
-
-        return f[m-1][n-1];
-
-    }
-
-    public int uniquePaths(int m, int n) {
-        //二维dp  f[i][j] 表示从左上角(0,0)到(i,j)位置的路径数量
-        int[][] f = new int[m][n];
-
-        //初始化边界，首行和首列均设为1
-        for(int i=0; i<m; i++){
-            f[i][0] = 1;
-        }
-        for(int j=0; j<n; j++){
-            f[0][j] = 1;
-        }
-        //状态转移方程 f[i][i] = f[i-1][j] + f[i][j-1]  只能从上面或者左边一格走过来
-        for(int i=1; i<m; i++){
-            for(int j=1; j<n; j++){
-                f[i][j] = f[i-1][j] + f[i][j-1];
-            }
-        }
-        return f[m-1][n-1];
-    }
 
     public List<Integer> rightSideView(TreeNode root) {
         List<Integer> result = new ArrayList<>();
@@ -374,14 +310,6 @@ public class Solution {
         odd.next = even_head;
         even.next = null;
         return head;
-    }
-
-
-    public int findPeakElement(int[] nums) {
-
-
-
-        return 0;
     }
 
 
