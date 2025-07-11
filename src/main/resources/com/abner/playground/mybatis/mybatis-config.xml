@@ -16,6 +16,6 @@
     </environment>
   </environments>
   <mappers>
-    <mapper class="com.abner.playground.mybatis.BlogMapper"/>
+    <mapper class="com.abner.playground.framework.mybatis.BlogMapper"/>
   </mappers>
 </configuration>

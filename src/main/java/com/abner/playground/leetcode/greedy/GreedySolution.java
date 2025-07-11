@@ -47,6 +47,23 @@ public class GreedySolution {
         //System.out.println(ret);
     }
 
+    //No.452 用最少数量的箭引爆气球
+    public int findMinArrowShots(int[][] points) {
+        //按左侧排序， 按右侧则是a[1], b[1]
+        Arrays.sort(points, (o1,o2) -> Integer.compare(o1[0], o2[0]));
+        int n = points.length;
+        //发现一个重叠 -> n-1
+        for(int i=1; i<points.length; i++){
+            //排序后 后一位的左侧小于等于 前一位的右侧，说明存在重叠
+            if(points[i][0] <= points[i-1][1]){
+                n--;
+                //下一轮只比右侧，因此只更新右侧即可
+                points[i][1] = Math.min(points[i][1], points[i-1][1]);
+            }
+        }
+        return n;
+    }
+
     public void nextPermutation(int[] nums) {
         int n = nums.length;
         // 从后向前找第一个升序元素i和j

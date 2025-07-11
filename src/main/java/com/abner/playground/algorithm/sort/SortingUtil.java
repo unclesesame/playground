@@ -1,6 +1,7 @@
 package com.abner.playground.algorithm.sort;
 
 public class SortingUtil {
+
 	//every round, put largest to the end
 	public static void bubbleSort(int[] array) {
 		for(int i=0; i < array.length-1; i++){
@@ -13,9 +14,9 @@ public class SortingUtil {
 			}
 		}
 	}
-	
+
+	//每次从待排序的数据中选择最小的元素放到已排序列的末尾
 	public static void selectionSort(int[] array) {
-		//
 		for(int i=0; i < array.length - 1; i++){
 			int k = i;
 			for(int j = k + 1; j < array.length; j++){
@@ -35,7 +36,7 @@ public class SortingUtil {
 		sort(array, 0, array.length - 1);
 	}
 	
-	//返回key的位置（key的左侧都比key小，右侧都比key大）
+	//通过选择一个基准元素key(通常是数组第一个元素)，将列表分为两部分：key的左侧都比key小，右侧都比key大，然后递归地对这两部分进行排序
 	private static void sort(int[] array, int low, int high){
 		if(low>=high) {
 			return;
@@ -46,7 +47,7 @@ public class SortingUtil {
 	}
 	
 	private static int partition(int[] array, int low, int high){
-		int key = array[low];
+		int key = array[low];//基准元素，第一个元素
 		while(low < high){
 			while(low < high && key<=array[high]){
 				high--;
@@ -76,7 +77,7 @@ public class SortingUtil {
 	}
 	
 	public static void main(String[] args) {
-		int[] array = new int[]{5,7,8,10,2,3,9};
-		partition(array, 0, 6);
+		int[] array = new int[]{5,9,3,6,7};
+		partition(array, 0, 4);
 	}
 }

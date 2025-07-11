@@ -8,6 +8,119 @@ public class DpSolution {
         solution.minCostClimbingStairs(new int[]{10,15,20}); //ouput: 15
     }
 
+    //No.72 编辑距离 给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数, 可以word1执行三种操作
+    //插入一个字符， 删除一个字符， 替换一个字符
+    public int minDistance(String word1, String word2) {
+        int m= word1.length();
+        int n= word2.length();
+
+        //处理空串
+        if(m*n == 0){
+            return m+n;
+        }
+
+        //定义状态dp[i][j]表示word1 前i个字符转换到word2 前j个字符需要的最少步数
+        int[][] dp = new int[m+1][n+1];
+
+        //处理边界
+        for(int i=0; i<=m; i++){
+            dp[i][0] = i;
+        }
+        for(int j=0;j<=n; j++){
+            dp[0][j] = j;
+        }
+
+        //状态转移方程
+        for(int i=1; i<= m; i++){
+            for(int j=1; j<= n; j++){
+                if(word1.charAt(i-1) == word2.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    dp[i][j] = Math.min(Math.min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1]) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    //No.121 买卖股票的最佳时机 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for(int i=0; i<prices.length; i++){
+            minPrice = Math.min(minPrice, prices[i]);
+            maxProfit = Math.max(maxProfit, prices[i] - minPrice);
+        }
+        return maxProfit;
+    }
+
+    //一个整数数组 prices ，其中 prices[i] 表示某支股票第 i 天的价格
+    public int maxProfitII(int[] prices) {
+        int n =  prices.length;
+        int[][] dp = new int[n][2];
+
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+
+        for(int i=1; i<n; i++){
+            //前一天就不持有，或前一天持有但今天需要卖出
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]);
+            //前一天就持有，或前一天不持有但今天需要买入
+            dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i]);
+        }
+
+        return Math.max(dp[n-1][0], dp[n-1][1]);
+    }
+
+    //No.714 买卖股票的最佳时机含手续费
+    // prices[i]表示第 i 天的股票价格 ；整数 fee 代表了交易股票的手续费用。每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。返回获得利润的最大值
+    public int maxProfitWithFee(int[] prices, int fee) {
+        int n =  prices.length;
+        //dp[i][0]表示第i天不持有股票的最优解
+        //dp[i][1]表示第i天持有股票的最优解
+        int[][] dp = new int[n][2];
+
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+
+        for(int i=1; i<n; i++){
+            //前一天就不持有，或前一天持有但今天需要卖出
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i]- fee);
+            //前一天就持有，或前一天不持有但今天需要买入
+            dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i]);
+        }
+
+        return dp[n-1][0];
+    }
+
+    //No.309 买卖股票的最佳时机，含冷冻期，买入卖出后，隔一天才能再次买入
+    public int maxProfitWithFrozenPeriod(int[] prices) {
+        int n =  prices.length;
+        //dp[i][0]表示第i天不持有股票的最优解
+        //dp[i][1]表示第i天持有股票的最优解
+        int[][] dp = new int[n][3];
+
+        //持有股票
+        dp[0][0] = -prices[0];
+        //不持有股票，且在冷冻期 在第 i 天结束之后的状态。如果第 i 天结束之后处于冷冻期，那么第 i+1 天无法买入股票。
+        dp[0][1] = 0;
+        //不持有股票，且不在冷冻期
+        dp[0][2] = 0;
+
+
+        for(int i=1; i<n; i++){
+            //前一天就持有股票，或前一天不持有股票且不在冷冻期需要买入股票
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][2] - prices[i]);
+            //由于卖出动作进入冷冻期, i-1天必然持有股票
+            dp[i][1] = dp[i-1][0] + prices[i];
+            //说明i当天没有任何操作，没有买所以不持有，也没有卖因为没有进入冷冻期
+            dp[i][2] = Math.max(dp[i-1][1], dp[i-1][2]);
+
+        }
+
+        return Math.max(dp[n-1][1], dp[n-1][2]);
+    }
+
     //No.790 多米诺和托米诺平铺 两种形状的瓷砖：一种是 2 x 1 的多米诺形，另一种是形如 "L" 的托米诺形。两种形状都可以旋转， 给定整数 n ，返回可以平铺 2 x n 的面板的方法的数量
     public int numTilings(int n) {
         final int MOD = 1000000007;
