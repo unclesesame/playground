@@ -1,13 +1,60 @@
 package com.abner.playground.leetcode.tree;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class TreeSolution {
+
+    private int ans;
+
     public static void main(String[] args) {
         TreeSolution solution = new TreeSolution();
 
     }
+
+    //No. 102 二叉树的层序遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if(root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while(!queue.isEmpty()){
+            int currLevelSize = queue.size();
+            List<Integer> currLevelList = new ArrayList<>();
+            while (currLevelSize-- > 0){
+                TreeNode treeNode = queue.poll();
+                currLevelList.add(treeNode.val);
+                if(treeNode.left != null) queue.offer(treeNode.left);
+                if(treeNode.right != null) queue.offer(treeNode.right);
+            }
+            result.add(currLevelList);
+        }
+
+        return result;
+    }
+
+    //No.543 二叉树的直径(两个叶子节点的最长距离)
+    public int diameterOfBinaryTree(TreeNode root) {
+        //两个叶子节点的最长距离，不一定经过root
+        dfs(root);
+        return ans;
+    }
+
+    private int dfs(TreeNode root){
+       if(root == null) return 0;
+       int lLen = dfs(root.left);
+       int rLen = dfs(root.right);
+       ans = Math.max(ans, lLen+rLen);
+       return Math.max(lLen, rLen) + 1;
+    }
+
+
 
     //No.450 删除二叉树中的节点
     //给定一个二叉搜索树的根节点 root 和一个值 key，删除二叉搜索树中的 key 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用
