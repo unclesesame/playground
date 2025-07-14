@@ -43,7 +43,6 @@ public class GreedySolution {
         //int ret = solution.longestSubarray(new int[]{0,1,1,1,0,1,1,0,1});
         //int ret = solution.compress(new char[]{'a','b','b','b','b','b','b','b','b','b','b','b','b'});
         //solution.permute(new int[]{0,1,2});
-        solution.nextPermutation(new int[]{3,2,1});
         //System.out.println(ret);
     }
 
@@ -64,33 +63,6 @@ public class GreedySolution {
         return n;
     }
 
-    public void nextPermutation(int[] nums) {
-        int n = nums.length;
-        // 从后向前找第一个升序元素i和j
-        if(n==1) return;
-        int i;
-        for(i=n-2;i>=0; i--){
-            if(nums[i] < nums[i+1]){
-                break;
-            }
-        }
-
-        //如果找不到，说明整个nums倒序，直接排序整个数组
-        if(i>-1){
-            //从右向左遍历找到第一个比nums[i]大的数，与nums[i]交换位置，并将i位置之后的所有数排序
-            for(int k=n-1; k>=0; k--){
-                if(nums[k] > nums[i]){
-                    int temp = nums[k];
-                    nums[k] = nums[i];
-                    nums[i] = temp;
-                    break;
-                }
-            }
-
-        }
-        Arrays.sort(nums, i+1, n);
-
-    }
 
     private void swap(int i, int j, int[] nums){
         int temp = nums[i];

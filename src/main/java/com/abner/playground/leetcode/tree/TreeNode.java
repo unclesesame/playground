@@ -1,7 +1,5 @@
 package com.abner.playground.leetcode.tree;
 
-import org.antlr.v4.runtime.tree.Tree;
-
 public class TreeNode {
 
     int val;

@@ -1,5 +1,7 @@
 package com.abner.playground.leetcode.linkedlist;
 
+import cn.hutool.db.DbRuntimeException;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -19,7 +21,33 @@ public class LinkedListSolution {
         solution.isPalindrome(head);
     }
 
-    //Np.141 环形链表
+    //No.142 环形链表II  返回环的入口， 链表五环返回null
+    public ListNode detectCycle(ListNode head) {
+
+        if(head == null) return null;
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast == slow){
+                break;
+            }
+        }
+
+        if(fast != slow || slow.next == null) return null;
+
+        ListNode ptr = head;
+        while(slow != ptr){
+            slow = slow.next;
+            ptr = ptr.next;
+        }
+        return ptr;
+    }
+
+    //No.141 环形链表 判断链表是否有环
     public boolean hasCycle(ListNode head) {
         ListNode fast = head;
         ListNode slow = head;

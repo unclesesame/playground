@@ -1,9 +1,8 @@
 package com.abner.playground.leetcode.tree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import com.abner.playground.algorithm.tree.SearchUtil;
+
+import java.util.*;
 
 public class TreeSolution {
 
@@ -12,6 +11,53 @@ public class TreeSolution {
     public static void main(String[] args) {
         TreeSolution solution = new TreeSolution();
 
+        solution.isValidBST(buildTree());
+
+    }
+
+    static TreeNode buildTree(){
+        TreeNode root = new TreeNode(5);
+        TreeNode node1 = new TreeNode(4);
+        TreeNode node2 = new TreeNode(6);
+        TreeNode node3 = new TreeNode(3);
+        TreeNode node4 = new TreeNode(7);
+
+        root.left = node1;
+        root.right = node2;
+
+        node2.left=node3;
+        node2.right=node4;
+
+        return root;
+
+    }
+
+    //No.98 验证二叉搜索树
+    public boolean isValidBST(TreeNode root) {
+
+        //中序遍历是升序的，遍历时监测当前节点是否大于前一节点
+        Stack<TreeNode> stack = new Stack();
+        double inorder = -Double.MAX_VALUE;
+        TreeNode current = root;
+
+        while (!stack.isEmpty() || current != null){
+            //左子树依次入栈
+            while(current != null){
+                stack.push(current);
+                current = current.left;
+            }
+            //左
+            current = stack.pop();
+            if(current.val <= inorder){
+                return false;
+            }
+            //根
+            inorder = current.val;
+            //右
+            current = current.right;
+
+        }
+        return true;
     }
 
     //No. 102 二叉树的层序遍历

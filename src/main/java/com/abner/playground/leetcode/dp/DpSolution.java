@@ -8,6 +8,22 @@ public class DpSolution {
         solution.minCostClimbingStairs(new int[]{10,15,20}); //ouput: 15
     }
 
+    //No.279 完全平方数  给你一个整数 n ，返回 和为 n 的完全平方数的最少数量
+    public int numSquares(int n) {
+        //以15=9+4+1+1 为例， 这些数字，比如是[1, 根号下15]之前的取值 枚举这些数，假设当前枚举j，那么还需要凑i-j*j
+        //所以子问题和原问题类似，只是规模表小。
+        //所以是dp问题  dp[i] = 1 + min(dp[i-j*j]) j取[1,根号下i]
+        int[] f = new int[n+1];
+        for(int i=1; i<=n; i++){
+            int minN = Integer.MAX_VALUE;
+            for(int j=1; j*j <=i; j++){
+                minN = Math.min(minN, f[i-j*j]);
+            }
+            f[i] =  minN + 1;
+        }
+        return f[n];
+    }
+
     //No.72 编辑距离 给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数, 可以word1执行三种操作
     //插入一个字符， 删除一个字符， 替换一个字符
     public int minDistance(String word1, String word2) {
