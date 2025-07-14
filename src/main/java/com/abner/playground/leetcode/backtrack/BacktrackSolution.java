@@ -110,14 +110,6 @@ public class BacktrackSolution {
         backtrackSubsets(state, curr+1, nums, res);
     }
 
-    //No.90 子集II 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
-        return null;
-    }
-
-    private void backtrackSubset2(Deque<Integer> state, int[] nums, int start, List<List<Integer>> res){
-
-    }
 
     //No.51 N皇后
     public List<List<String>> solveNQueens(int n) {
