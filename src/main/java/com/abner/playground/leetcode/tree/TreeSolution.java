@@ -1,6 +1,7 @@
 package com.abner.playground.leetcode.tree;
 
 import com.abner.playground.algorithm.tree.SearchUtil;
+import org.apache.orc.impl.TreeReaderFactory;
 
 import java.util.*;
 
@@ -147,6 +148,23 @@ public class TreeSolution {
         }
 
         return root;
+    }
+
+    //No.872 叶子相似的树 root1和root2 从左到右的叶值序列相同返回true
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        //后续遍历root1和root2，并比较叶子
+        List<Integer> seq1 = new ArrayList<>();
+        List<Integer> seq2 = new ArrayList<>();
+        postLeafTraversal(root1, seq1);
+        postLeafTraversal(root2, seq2);
+        return seq1.equals(seq2);
+    }
+
+    private void postLeafTraversal(TreeNode root, List<Integer> seq){
+        if(root == null) return;
+        if(root.left == null && root.right == null) seq.add(root.val);
+        postLeafTraversal(root.left, seq);
+        postLeafTraversal(root.right, seq);
     }
 
     //No. 1161. 树的最大层内元素和
