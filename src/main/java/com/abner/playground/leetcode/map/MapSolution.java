@@ -1,6 +1,7 @@
 package com.abner.playground.leetcode.map;
 
 import com.abner.playground.leetcode.other.Solution;
+import org.apache.directory.shared.kerberos.messages.TgsRep;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,6 +15,47 @@ public class MapSolution {
         int count = solution.orangesRotting(new int[][]{{0}});
         System.out.println(count);
     }
+
+    //岛屿数量 1代表陆地，2代表水，计算网格中岛屿数量 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+    public int numIslands(char[][] grid) {
+        //深度优先遍历，计算联通分量个数
+        if(grid == null || grid.length == 0){
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int num_islands = 0;
+
+        for(int i =0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == '1'){
+                    ++num_islands;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+
+        return num_islands;
+    }
+
+    private void dfs(char[][] grid, int i, int j){
+        int m = grid.length;
+        int n = grid[0].length;
+
+        if(i<0 || i>=m || j < 0 || j >= n || grid[i][j] == '0'){
+            return;
+        }
+
+        grid[i][j] = '0';
+        dfs(grid, i-1, j);//上
+        dfs(grid, i+1, j);//下
+        dfs(grid, i, j-1);//左
+        dfs(grid, i, j+1);//右
+
+    }
+
 
     //No.547 省份数量。 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连
     public int findCircleNum(int[][] isConnected) {

@@ -1,7 +1,9 @@
 package com.abner.playground.leetcode.array;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ArraySolution {
 
@@ -9,6 +11,42 @@ public class ArraySolution {
         ArraySolution solution = new ArraySolution();
         solution.sortColors(new int[]{2,0,2,1,1,0});
         //solution.nextPermutation(new int[]{3,2,1}); 1,2,3 -> 输出1,3,2  2,3,1->输出3,1,2   3,2,1->输出 1,2,3
+    }
+
+    //No.54 螺旋矩阵  顺时针螺旋打印m*n的矩阵
+    public List<Integer> spiralOrder(int[][] matrix){
+        List<Integer> res = new ArrayList<>();
+
+        if(matrix == null)
+            return res;
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int total = m*n;
+
+        //右->下->左->上
+        int[][] directions = new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+        boolean[][] vistited = new boolean[m][n];
+
+        int row=0; int col=0;
+        int direction = 0;
+
+        for(int i=0; i<total; i++) {
+            res.add(matrix[row][col]);
+            vistited[row][col] = true;
+            int nextRow = row + directions[direction][0];
+            int nextCol = col + directions[direction][1];
+            //碰到已访问过的或者矩阵边界换方向
+            if (nextRow < 0 || nextRow >= m || nextCol < 0 || nextCol >= n || vistited[nextRow][nextCol]) {
+                direction = (direction + 1) % 4;
+            }
+            row += directions[direction][0];
+            col += directions[direction][1];
+
+        }
+
+        return res;
     }
 
     //No.73 矩阵置0 如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0
