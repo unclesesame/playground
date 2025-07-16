@@ -1,16 +1,17 @@
 package com.abner.playground.leetcode.array;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class ArraySolution {
 
     public static void main(String[] args) {
         ArraySolution solution = new ArraySolution();
-        solution.sortColors(new int[]{2,0,2,1,1,0});
+        //solution.sortColors(new int[]{2,0,2,1,1,0});
         //solution.nextPermutation(new int[]{3,2,1}); 1,2,3 -> 输出1,3,2  2,3,1->输出3,1,2   3,2,1->输出 1,2,3
+        solution.rotate(new int[]{1},0);
     }
 
     //No.54 螺旋矩阵  顺时针螺旋打印m*n的矩阵
@@ -47,6 +48,31 @@ public class ArraySolution {
         }
 
         return res;
+    }
+
+    //No.56 合并重叠区间 [[1,3],[2,6],[8,10],[15,18]] ==> [[1,6],[8,10],[15,18]]
+    public int[][] merge(int[][] intervals) {
+        int m = intervals.length;
+        if(m == 0) return new int[0][2];
+        //入参数组按左边界排序
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+
+        List<int[]> merged = new ArrayList<>();
+        merged.add(intervals[0]);
+        int i=1;
+        while(i<m){
+            //从合并集中取出最后一个元素
+           int[] item = merged.get(merged.size()-1);
+           //右端点大于等于后序的左端点，有重叠，需要合并，把两个区间左端点最小值和右端点最大值重新放入merged
+           if(item[1] >= intervals[i][0]){
+               item[0] = Math.min(item[0], intervals[i][0]);
+               item[1] = Math.max(item[1], intervals[i][1]);
+           }else{
+               merged.add(intervals[i]);
+           }
+           i++;
+        }
+        return merged.toArray(new int[merged.size()][]);
     }
 
     //No.73 矩阵置0 如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0
@@ -100,6 +126,30 @@ public class ArraySolution {
         if(zeroInRow0){
             for(int j=0; j<n; j++){
                 matrix[0][j] = 0;
+            }
+        }
+    }
+
+    //No.189 轮转数组 将数组所有元素向有轮转k个位置
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n; // 避免k大于数组长度
+        int prev = nums[0];
+        int count = 0;
+        int startIndex = 0;
+        int currIndex = 0;
+        //n个数都移动后停止循环
+        while(count < n){
+            currIndex = (currIndex+k)%n;
+            int temp= nums[currIndex];
+            nums[currIndex] = prev;
+            prev = temp;
+            count++;
+
+            //如果currIndex又回到起点，currIndex往右一位继续上面操作
+            if(startIndex == currIndex && ++currIndex < n){
+                prev = nums[currIndex];
+                startIndex = currIndex;
             }
         }
     }

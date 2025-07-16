@@ -8,6 +8,7 @@ import java.util.*;
 public class TreeSolution {
 
     private int ans;
+    private int max;
 
     public static void main(String[] args) {
         TreeSolution solution = new TreeSolution();
@@ -196,4 +197,40 @@ public class TreeSolution {
         return ans;
     }
 
+    //No.1372 二叉树中的最长交错路径
+    public int longestZigZag(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        int max = 0;
+        //false 向左，  true向右
+        dfsForZigZag(root, false, 0);
+        dfsForZigZag(root, true, 0);
+        return max;
+    }
+
+    private void dfsForZigZag(TreeNode root, boolean dir, int len) {
+        //每个节点记录最大长度
+        max = Math.max(max, len);
+        if (!dir) {
+            //应该向左，且可以向左，len+1
+            if (root.left != null) {
+                dfsForZigZag(root.left, true, len + 1);
+            }
+            //应该向左，但只能向右，len重置为1
+            if (root.right != null) {
+                dfsForZigZag(root.right, false, 1);
+            }
+        } else {
+            //应该向右，且可以向右，len+1
+            if (root.right != null) {
+                dfsForZigZag(root.right, false, len + 1);
+            }
+            //应该向右，但只能向左，len重置为1
+            if (root.left != null) {
+                dfsForZigZag(root.left, true, 1);
+            }
+        }
+    }
 }
+
