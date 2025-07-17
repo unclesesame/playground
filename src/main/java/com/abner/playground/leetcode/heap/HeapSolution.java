@@ -1,5 +1,8 @@
 package com.abner.playground.leetcode.heap;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class HeapSolution {
     public static void main(String[] args) {
 
@@ -40,5 +43,11 @@ public class HeapSolution {
         int temp = a[i];
         a[i] =a[j];
         a[j] = temp;
+    }
+
+
+    //No。239 滑动窗口最大值
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        return null;
     }
 }
