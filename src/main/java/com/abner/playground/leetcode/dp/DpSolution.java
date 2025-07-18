@@ -109,6 +109,31 @@ public class DpSolution {
         return dp[n-1][0];
     }
 
+    //No.300 最长递增子序列
+    public int lengthOfLIS(int[] nums) {
+
+        int n = nums.length;
+        if(n == 0) return 0;
+        int[] dp = new int[n];
+
+        //dp[i] 表示前i个数的最长子序列
+        dp[0] = 1;
+        int maxans = 1;
+
+        for(int i=1; i<n; i++){
+            dp[i] = 1; //每轮先复位
+            for(int j=0; j<i; j++){
+                //当nums[i] 有比前面0到i-1位置的数更大时, dp[i]等于前0到i-1的最长子序列+1
+                if(nums[i] > nums[j]){
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            maxans = Math.max(maxans, dp[i]);
+        }
+
+        return maxans;
+    }
+
     //No.309 买卖股票的最佳时机，含冷冻期，买入卖出后，隔一天才能再次买入
     public int maxProfitWithFrozenPeriod(int[] prices) {
         int n =  prices.length;

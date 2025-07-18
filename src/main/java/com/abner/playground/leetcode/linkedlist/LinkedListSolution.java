@@ -2,9 +2,7 @@ package com.abner.playground.leetcode.linkedlist;
 
 import cn.hutool.db.DbRuntimeException;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class LinkedListSolution {
 
@@ -88,6 +86,41 @@ public class LinkedListSolution {
             }
         }
         return false;
+    }
+
+    //No.138 随机链表复制
+    public Node copyRandomList(Node head) {
+        if(head == null) return null;
+        //原节点->新节点映射
+        Map<Node, Node> map = new HashMap<>();
+        Node curr = head;
+        //第一次遍历，创建新节点并建立映射关系
+        while (curr != null){
+            Node newNode = new Node(curr.val);
+            map.put(curr, newNode);
+            curr = curr.next;
+        }
+        //第二次遍历，设置next和random
+        curr = head;
+        while (curr != null){
+            Node clone = map.get(curr);
+            clone.next = map.get(curr.next);
+            clone.random = map.get(curr.random);
+            curr = curr.next;
+        }
+        return map.get(head);
+    }
+
+    class Node {
+        int val;
+        Node next;
+        Node random;
+
+        public Node(int val){
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
     }
 
     //No.148 排序链表 按升序排列并返回排序后的链表

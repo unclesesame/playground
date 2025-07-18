@@ -14,6 +14,27 @@ public class ArraySolution {
         solution.rotate(new int[]{1},0);
     }
 
+    //No.48 旋转图像 给定n*n matrix表示一个图像，请将图像原地顺时针旋转90°
+    public void retate(int[][] matrix){
+        int n = matrix.length;
+
+        //旋转前的位置(row,col)
+        //旋转后的位置 新row=老col, 新col=n-老row-1
+        //重复操作后会是如下的循环
+        //(row,col)->(col, n-row-1)->(n-row-1,n-col-1) -> (n-col-1, row) -> (row,col)
+        //只需一个变量temp 存储即将被覆盖位置的原值
+        //每一轮矩阵中四个点位会完成旋转，所以当n为基数时，需要n*n/4轮(即((n/2)*(n/2))，当n为奇数时，中心点位无需旋转，所以需要（n*n-1）/4轮，即((n-1)/2)*(n+1)/2)
+        for(int i=0; i<n/2; i++){
+            for(int j=0; j<(n+1)/2; j++){
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[n-j-1][i];
+                matrix[n-j-1][i] = matrix[n-i-1][n-j-1];
+                matrix[n-i-1][n-j-1] = matrix[j][n-i-1];
+                matrix[j][n-i-1] = temp;
+            }
+        }
+    }
+
     //No.54 螺旋矩阵  顺时针螺旋打印m*n的矩阵
     public List<Integer> spiralOrder(int[][] matrix){
         List<Integer> res = new ArrayList<>();
