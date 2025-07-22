@@ -2,6 +2,7 @@ package com.abner.playground.leetcode.tree;
 
 import com.abner.playground.algorithm.tree.SearchUtil;
 import org.apache.orc.impl.TreeReaderFactory;
+import scala.Int;
 
 import java.util.*;
 
@@ -9,6 +10,11 @@ public class TreeSolution {
 
     private int ans;
     private int max;
+
+    //用hash表记录所有节点的父节点,因为所有节点的val互不相同，可以以val作为key
+    Map<Integer, TreeNode> parent = new HashMap<>();
+    //记录节点是否已访问过
+    Set<Integer> visited = new HashSet<>();
 
     public static void main(String[] args) {
         TreeSolution solution = new TreeSolution();
@@ -86,6 +92,79 @@ public class TreeSolution {
 
         return result;
     }
+
+    //No.104 二叉树最大深度
+    public int maxDepth(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        else{
+            int leftHeight = maxDepth(root.left);
+            int rightHeight = maxDepth(root.right);
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+
+    //No.199 二叉树的右视图
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if(root == null) return result;
+
+        //层序遍历标准写法，引入队列，并将root先入队
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        //循环停止条件是queue为空
+        while(!queue.isEmpty()){
+            //记录每层右多少节点
+            int levelSize = queue.size();
+            List<Integer> currLevel = new ArrayList<>();
+            //将每层的节点再次入队
+            for(int i=0; i< levelSize; i++){
+                TreeNode node = queue.poll();
+                currLevel.add(node.val);
+                //从右往左层序遍历
+                if(node.right != null) queue.offer(node.right);
+                if(node.left != null) queue.offer(node.left);
+            }
+            //由于是从右向左层序遍历，每层只需要保留最右侧节点，所以这里get(0)
+            result.add(currLevel.get(0));
+        }
+
+        return result;
+    }
+
+    //No.236 二叉树的最近公共祖先
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        //用hash表记录所有节点的父节点,因为所有节点的val互不相同，可以以val作为key
+        //Map<Integer, TreeNode> parent = new HashMap<>();
+        //记录节点是否已访问过
+        //Set<Integer> visited = new HashSet<>();
+        dfsForCommonAncestor(root);
+        while (p != null){
+            visited.add(p.val);
+            p = parent.get(p.val);
+        }
+        while (q != null){
+            if(visited.contains(q.val)){
+                return q;
+            }
+            q = parent.get(q.val);
+        }
+        return null;
+    }
+
+    private void dfsForCommonAncestor(TreeNode root){
+        if(root.left != null){
+            parent.put(root.left.val, root);
+            dfsForCommonAncestor(root.left);
+        }
+        if(root.right != null){
+            parent.put(root.right.val, root);
+            dfsForCommonAncestor(root.right);
+        }
+    }
+
 
     //No.543 二叉树的直径(两个叶子节点的最长距离)
     public int diameterOfBinaryTree(TreeNode root) {
