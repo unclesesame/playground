@@ -1,8 +1,5 @@
 package com.abner.playground.leetcode.map;
 
-import com.abner.playground.leetcode.other.Solution;
-import org.apache.directory.shared.kerberos.messages.TgsRep;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -92,17 +89,15 @@ public class MapSolution {
         maze[entrance[0]][entrance[1]] = '+';
         //每一步只能上下左右走
         int directions[][] = {{1,0},{-1,0},{0,1},{0,-1}};
-        //起点坐标转为一个int 编号
-        int start = entrance[0]*n + entrance[1];
+
         Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{start, 0}); //起点入队
+        queue.offer(new int[]{entrance[0], entrance[1], 0}); //起点坐标和到起点的距离入队
 
         while(!queue.isEmpty()){
             int[] front = queue.poll();
-            //编号转坐标
-            int row = front[0]/n;
-            int column =  front[0]%n;
-            int d = front[1];
+            int row = front[0];
+            int column =  front[1];
+            int d = front[2];
             for(int[] direct: directions){
                 //往四个方向走
                 int nextRow = row+direct[0];
@@ -115,8 +110,7 @@ public class MapSolution {
                 if(nextRow == 0 || nextRow == m-1 || nextColumn == 0 || nextColumn == n-1){
                     return d+1;
                 }
-                int nextPosition = nextRow * n + nextColumn;// 新的坐标编号和距起点距离入队
-                queue.offer(new int[]{nextPosition, d+1});
+                queue.offer(new int[]{nextRow, nextColumn, d+1});
                 maze[nextRow][nextColumn] = '+'; //已入队访问过，设置为墙
             }
         }

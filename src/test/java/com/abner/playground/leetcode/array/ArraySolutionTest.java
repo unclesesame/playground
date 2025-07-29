@@ -1,0 +1,16 @@
+package com.abner.playground.leetcode.array;
+
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+
+import static org.junit.Assert.*;
+
+public class ArraySolutionTest {
+
+    @Test
+    public void isPalindrome() {
+        ArraySolution arraySolution = new ArraySolution();
+       // Assertions.assertTrue(arraySolution.isPalindrome("A man, a plan, a canal: Panama"));
+        Assertions.assertTrue(arraySolution.isPalindrome("0P"));
+    }
+}

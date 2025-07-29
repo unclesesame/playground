@@ -11,11 +11,11 @@ import java.io.IOException;
 @RestController
 public class TestController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+   /* private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
-    @RequestMapping("fileUpload")
+    @RequestMapping("testFileUpload")
     @ResponseBody
-    public String fileUpload(@RequestParam("uploadFile") MultipartFile file, @RequestParam("FileType") String fileType) {
+    public String testFileUpload(@RequestParam("uploadFile") MultipartFile file, @RequestParam("FileType") String fileType) {
         if (file.isEmpty()) {
             return "false";
         }
@@ -43,5 +43,5 @@ public class TestController {
     @RequestMapping("multifile")
     public String multifile() {
         return "/multifile";
-    }
+    }*/
 }

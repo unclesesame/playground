@@ -14,6 +14,36 @@ public class ArraySolution {
         solution.rotate(new int[]{1},0);
     }
 
+    //No.15 三数之和
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+        //排序后采用双指针法，第二重循环两个指针一个从左向右，一个从右向左
+        for(int i =0; i< n-2; i++){
+            if(nums[i] > 0) break;
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            for(int j=i+1; j< n-1; j++){
+                //剪枝去重
+                if(j>i+1 && nums[j] == nums[j-1]) continue;
+                int k = n-1;
+                while(k>j && nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                }
+                if(k == j) break;
+                if(nums[i] + nums[j] + nums[k] == 0){
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(nums[k]);
+                    result.add(list);
+                }
+            }
+        }
+
+        return result;
+    }
+
     //No.48 旋转图像 给定n*n matrix表示一个图像，请将图像原地顺时针旋转90°
     public void retate(int[][] matrix){
         int n = matrix.length;
@@ -70,6 +100,7 @@ public class ArraySolution {
 
         return res;
     }
+
 
     //No.56 合并重叠区间 [[1,3],[2,6],[8,10],[15,18]] ==> [[1,6],[8,10],[15,18]]
     public int[][] merge(int[][] intervals) {
@@ -149,6 +180,53 @@ public class ArraySolution {
                 matrix[0][j] = 0;
             }
         }
+    }
+
+    //No.26 删除语序数组中的重复项
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        if(n == 0) return 0;
+        int fast = 1, slow = 1;
+        while (fast < n){
+            //不重复
+            if(nums[fast] != nums[fast -1]){
+                //将不重复的数写在slow位置
+                nums[slow] = nums[fast];
+                //slow往后挪一位，用写下一个数
+                slow++;
+             }
+            //继续往前遍历
+            fast++;
+        }
+        return slow;
+    }
+
+    //No.80 删除有序数组中的重复项II
+    public int removeDuplicatesII(int[] nums) {
+        return 0;
+    }
+
+    //No.125验证回文数
+    public boolean isPalindrome(String s) {
+        int n = s.length();
+        char[] charArray = s.toCharArray();
+        int i = 0, j = n-1;
+        while(i<=j){
+            if(!Character.isAlphabetic(charArray[i]) && !Character.isDigit(charArray[i])){
+                i++;
+                continue;
+            }
+            if(!Character.isAlphabetic(charArray[j]) && !Character.isDigit(charArray[j])){
+                j--;
+                continue;
+            }
+            if(Character.toLowerCase(charArray[i]) != Character.toLowerCase(charArray[j])){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
     }
 
     //No.189 轮转数组 将数组所有元素向有轮转k个位置
