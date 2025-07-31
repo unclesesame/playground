@@ -7,36 +7,11 @@ import org.apache.spark.sql.catalyst.expressions.*;
 import org.apache.spark.sql.catalyst.plans.logical.*;
 import scala.collection.Seq;
 
-import javax.crypto.spec.PSource;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class SparkDemo {
-    public void main1(String[] args) {
-         SparkSession spark = SparkSession
-                 .builder()
-                 .appName("Spark Demo")
-                 .master("local[*]")
-                 .getOrCreate();
-
-       Dataset<Row> peopleDf = spark.read().json("src/main/resources/com/abner/playground/spark/people.json");
-        /* df.show();
-         df.printSchema();
-         df.select("name").show();
-         df.select(col("name"), col("age").plus(1)).show();
-         df.filter(col("age").gt(21)).show();
-         df.groupBy("age").count().show();
-*/
-
-        peopleDf.createOrReplaceTempView("people");
-
-        Dataset<Row> scoreDf = spark.read().json("src/main/resources/com/abner/playground/spark/people.json");
-        scoreDf.createOrReplaceTempView("score");
-
-        Dataset<Row> sqlDF = spark.sql("SELECT * FROM people");
-        sqlDF.show();
-    }
 
     public static void main(String[] args) {
         SparkSession spark = SparkSession

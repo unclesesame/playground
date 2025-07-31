@@ -201,9 +201,36 @@ public class ArraySolution {
         return slow;
     }
 
+    //No.55 跳跃游戏 一个非负整数数组 nums ，你最初位于数组的 第一个下标 。数组中的每个元素代表你在该位置可以跳跃的最大长度 判断你是否能够到达最后一个下标
+    public boolean canJump(int[] nums) {
+        //dp[i] 表示从起点到达i点还能超出i点的最大长度
+        int n = nums.length;
+        int[] dp = new int[n];
+        dp[0] = 0;
+        for(int i=1; i<n; i++){
+            dp[i] = Math.max(nums[i-1]-1, dp[i-1]-1);
+            if(dp[i] < 0) return false;
+        }
+        if(dp[n-1] >= 0) return true;
+        return false;
+    }
+
     //No.80 删除有序数组中的重复项II
     public int removeDuplicatesII(int[] nums) {
-        return 0;
+        int n = nums.length;
+        if(n <= 2) return n;
+
+        int slow =2, fast = 2;
+
+        while (fast < n){
+            if(nums[slow -2] != nums[fast]){
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+
+        return slow;
     }
 
     //No.125验证回文数
