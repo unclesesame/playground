@@ -280,6 +280,16 @@ public class ArraySolution {
         }
     }
 
+    //No.274 H指数
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int h=0; int i = citations.length-1;
+        while (i>=0 && citations[i] > h){
+            h++;
+            i--;
+        }
+        return h;
+    }
 
     //No.287 寻找重复数据. 给定一个包含 n + 1 个整数的数组 nums ，其数字都在 [1, n] 范围内, 假设 nums 只有 一个重复的整数 ，返回 这个重复的数
     public int findDuplicate(int[] nums) {

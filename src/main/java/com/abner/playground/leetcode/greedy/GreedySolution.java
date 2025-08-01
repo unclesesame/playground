@@ -4,32 +4,6 @@ package com.abner.playground.leetcode.greedy;
 import java.util.*;
 
 
-//  1 2 3 4 5     5  1,0; 4,-1 ; 2,1; 3, -1; 3,2
-class TreeNode{
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(){}
-    TreeNode(int val){
-        this.val = val;
-    }
-    TreeNode(int val, TreeNode left, TreeNode right){
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
-
-class ListNode {
-        int val;
-        ListNode next;
-        ListNode(){}
-        ListNode(int val) {this.val = val;}
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-}
-
-
-
 
 public class GreedySolution {
 
@@ -44,6 +18,34 @@ public class GreedySolution {
         //int ret = solution.compress(new char[]{'a','b','b','b','b','b','b','b','b','b','b','b','b'});
         //solution.permute(new int[]{0,1,2});
         //System.out.println(ret);
+    }
+
+    //No.134 加油站
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        //如果x到达不了y+1，那么x-y之间的点也不可能到达y+1，因为中间任何一点的油都是拥有前面的余量的，所以下次遍历直接从y+1开始
+        int n = gas.length;
+        int i=0;
+        //从0号加油站开始遍历，如果不能到达y+1，直接从y+1开始尝试
+        while  (i<n){
+            int sumOfGas = 0;
+            int sumOfCost = 0;
+            int count = 0;//记录走过了多少个加油站
+            while (count < n){
+                int j = (i+count)%n;
+                sumOfGas += gas[j];
+                sumOfCost += cost[j];
+                if (sumOfCost > sumOfGas){
+                    break;
+                }
+                count++;
+            }
+            if(count == n){
+                return i;
+            }else{
+                i = i + count + 1;
+            }
+        }
+        return -1;
     }
 
     //No.452 用最少数量的箭引爆气球
@@ -71,63 +73,7 @@ public class GreedySolution {
     }
 
 
-    public int trapByColumn(int[] height) {
-        int n = height.length;
-        int res = 0;
-        //按列求每列可接多少雨水，第0列和第n-1列无法接雨水，直接跳过
-        for(int i=1; i<n-1; i++){
-            //求i列左侧最高的列
-            int highestLeft = 0;
-            for(int l=0; l <i; l++){
-                highestLeft = Math.max(height[l], highestLeft);
-            }
-            //求i列右侧最高的列  (每轮都要算一遍左右两侧的最高列，可以用DP优化)
-            int highestRight =0;
-            for(int r=i+1; r <n; r++){
-                highestRight = Math.max(height[r], highestRight);
-            }
 
-            //求左右两个测最矮的列
-            int shorter = Math.min(highestLeft, highestRight);
-
-            //若i列高度小于矮列，则可接雨水 矮列高-i列高
-
-            if(height[i] < shorter) {
-                res += shorter - height[i];
-            }
-            //若i列高度大于等于矮列，则不可接雨水
-        }
-        return res;
-    }
-
-    public int trapDP(int[] height) {
-        int n = height.length;
-        int res = 0;
-
-        //max_left[i] 表示第i列左侧最高列
-        int[] max_left = new int[n];
-        max_left[0] = 0;
-        for(int i=1; i<n; i++){
-            max_left[i] = Math.max(max_left[i-1], height[i-1]);
-        }
-
-        //max_right[i] 表示第i列右侧最高列
-        int[] max_right = new int[n];
-        max_right[n-1] = 0;
-        for(int j=n-2; j>0; j--){
-            max_right[j] = Math.max(max_right[j+1], height[j+1]);
-        }
-
-        for(int i=1; i<n-1; i++){
-            int shorter = Math.min(max_left[i], max_right[i]);
-            //若i列高度小于矮列，则可接雨水 矮列高-i列高
-            if(height[i] < shorter) {
-                res += shorter - height[i];
-            }
-            //若i列高度大于等于矮列，则不可接雨水
-        }
-        return res;
-    }
 
     public int compress(char[] chars) {
         int n = chars.length;
@@ -153,25 +99,7 @@ public class GreedySolution {
 
 
 
-    public int pathSum(TreeNode root, int targetSum) {
-        if(root == null) return 0;
 
-        int ret = rootSum(root, targetSum);
-        ret += pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
-        return ret;
-    }
-
-    private int rootSum(TreeNode root, int targetSum){
-
-        if(root == null) return 0;
-        int ret=0;
-        if(root.val == targetSum){
-            ret++;
-        }
-        ret += rootSum(root.left, targetSum-root.val) + rootSum(root.right, targetSum - root.val);
-
-        return ret;
-    }
 
     public boolean increasingTripletGreedy(int[] nums) {
         int n = nums.length;
@@ -216,68 +144,6 @@ public class GreedySolution {
         return false;
     }
 
-    public int goodNodes(TreeNode root) {
-        return dfs(root, Integer.MIN_VALUE);
-    }
-
-    private int dfs(TreeNode root, int pathMax){
-        if(root == null) return 0;
-        int res = 0;
-        if(root.val >= pathMax){
-            res++;
-            pathMax = root.val;
-        }
-        res += dfs(root.left, pathMax) + dfs(root.left, pathMax);
-        return res;
-    }
-
-
-
-    public int pairSum(ListNode head) {
-        ListNode slow = head;
-        ListNode fast = head.next;
-
-        Stack<Integer> stack = new Stack<>();
-        stack.push(slow.val);
-        int max = 0;
-        while(fast != null && fast.next != null){
-            fast = fast.next.next;
-            slow = slow.next;
-            stack.push(slow.val);
-        }
-        while(slow.next !=null && !stack.isEmpty()){
-            slow = slow.next;
-            int sum = slow.val + stack.pop();
-            max = Math.max(sum, max);
-        }
-        return max;
-    }
-
-
-
-    public ListNode oddEvenList(ListNode head) {
-        if(head == null || head.next == null || head.next.next ==null)
-            return head;
-
-
-        ListNode even_head = head.next;
-        ListNode odd = head;
-        ListNode even = even_head;
-
-        while(odd.next != null && even.next != null){
-            odd.next = even.next;
-            odd = odd.next;
-            if(odd.next != null){
-                even.next = odd.next;
-                even = even.next;
-            }
-        }
-
-        odd.next = even_head;
-        even.next = null;
-        return head;
-    }
-
 
     public int[] productExceptSelf(int[] nums) {
         int n = nums.length;
@@ -302,22 +168,7 @@ public class GreedySolution {
         return ans;
     }
 
-    public ListNode deleteMiddle(ListNode head) {
-        if(head == null || head.next == null){
-            return null;
-        }
-        ListNode left= head;
-        ListNode preLeft = new ListNode();
-        preLeft.next = head;
-        ListNode right = head;
-        while(right != null && right.next != null){
-            right = right.next.next;
-            left = left.next;
-            preLeft = preLeft.next;
-        }
-        preLeft.next = left.next;
-        return head;
-    }
+
 
     public int longestSubarray(int[] nums) {
         int n = nums.length;
@@ -583,40 +434,7 @@ public class GreedySolution {
         return answer;
     }
 
-    public TreeNode searchBST(TreeNode root, int val) {
 
-
-        if(root == null) return null;
-        if(root.val == val) return root;
-        if(val > root.val){
-            searchBST(root.right, val);
-        }else{
-            searchBST(root.left, val);
-        }
-        return root;
-    }
-
-    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-        List<Integer> seq1 = new ArrayList<>();
-        List<Integer> seq2 = new ArrayList<>();
-        if(root1 != null) postTraversal(root1, seq1);
-        if(root2 != null) postTraversal(root1, seq2);
-        return seq1.equals(seq2);
-    }
-
-    private void postTraversal(TreeNode root, List<Integer> seq){
-       if(root.left == null && root.right == null){
-           seq.add(root.val);
-       }else{
-           if(root.left != null){
-               postTraversal(root.left, seq);
-           }
-           if(root.right != null){
-               postTraversal(root.right, seq);
-           }
-       }
-
-    }
 
 
 
@@ -901,23 +719,6 @@ public class GreedySolution {
         return builder.toString();
     }
 
-    public List<Integer> inorderTraversal(TreeNode root){
-        String str = "";
-        str.substring(1);
-        str.charAt(0);
-      List<Integer> result =  new ArrayList<>();
-      Stack<TreeNode> stack = new Stack<>();
-      while(root != null || !stack.isEmpty()){
-          while(root != null){
-              stack.push(root);
-              root = root.left;
-          }
-          root = stack.pop();
-          result.add(root.val);
-          root = root.right;
-      }
-      return result;
-    }
 
     public int longestConsetive(int[] nums){
         Set<Integer> numSet = new HashSet<Integer>();

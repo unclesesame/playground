@@ -19,6 +19,66 @@ public class LinkedListSolution {
         solution.isPalindrome(head);
     }
 
+    public int pairSum(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        Stack<Integer> stack = new Stack<>();
+        stack.push(slow.val);
+        int max = 0;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+            stack.push(slow.val);
+        }
+        while(slow.next !=null && !stack.isEmpty()){
+            slow = slow.next;
+            int sum = slow.val + stack.pop();
+            max = Math.max(sum, max);
+        }
+        return max;
+    }
+
+    public ListNode deleteMiddle(ListNode head) {
+        if(head == null || head.next == null){
+            return null;
+        }
+        ListNode left= head;
+        ListNode preLeft = new ListNode();
+        preLeft.next = head;
+        ListNode right = head;
+        while(right != null && right.next != null){
+            right = right.next.next;
+            left = left.next;
+            preLeft = preLeft.next;
+        }
+        preLeft.next = left.next;
+        return head;
+    }
+
+    public ListNode oddEvenList(ListNode head) {
+        if(head == null || head.next == null || head.next.next ==null)
+            return head;
+
+
+        ListNode even_head = head.next;
+        ListNode odd = head;
+        ListNode even = even_head;
+
+        while(odd.next != null && even.next != null){
+            odd.next = even.next;
+            odd = odd.next;
+            if(odd.next != null){
+                even.next = odd.next;
+                even = even.next;
+            }
+        }
+
+        odd.next = even_head;
+        even.next = null;
+        return head;
+    }
+
     //No.24 两两交换链表中的节点
     public ListNode swapPairs(ListNode head) {
         if(head == null || head.next == null) return head;

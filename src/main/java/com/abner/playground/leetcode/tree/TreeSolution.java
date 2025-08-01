@@ -38,6 +38,41 @@ public class TreeSolution {
 
     }
 
+    public int pathSum(TreeNode root, int targetSum) {
+        if(root == null) return 0;
+
+        int ret = rootSum(root, targetSum);
+        ret += pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+        return ret;
+    }
+
+    private int rootSum(TreeNode root, int targetSum){
+
+        if(root == null) return 0;
+        int ret=0;
+        if(root.val == targetSum){
+            ret++;
+        }
+        ret += rootSum(root.left, targetSum-root.val) + rootSum(root.right, targetSum - root.val);
+
+        return ret;
+    }
+
+    public int goodNodes(TreeNode root) {
+        return dfs(root, Integer.MIN_VALUE);
+    }
+
+    private int dfs(TreeNode root, int pathMax){
+        if(root == null) return 0;
+        int res = 0;
+        if(root.val >= pathMax){
+            res++;
+            pathMax = root.val;
+        }
+        res += dfs(root.left, pathMax) + dfs(root.left, pathMax);
+        return res;
+    }
+
     //No.98 验证二叉搜索树
     public boolean isValidBST(TreeNode root) {
 
@@ -179,6 +214,35 @@ public class TreeSolution {
        return Math.max(lLen, rLen) + 1;
     }
 
+    public TreeNode searchBST(TreeNode root, int val) {
+
+        if(root == null) return null;
+        if(root.val == val) return root;
+        if(val > root.val){
+            searchBST(root.right, val);
+        }else{
+            searchBST(root.left, val);
+        }
+        return root;
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root){
+        String str = "";
+        str.substring(1);
+        str.charAt(0);
+        List<Integer> result =  new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        while(root != null || !stack.isEmpty()){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            result.add(root.val);
+            root = root.right;
+        }
+        return result;
+    }
 
 
     //No.450 删除二叉树中的节点

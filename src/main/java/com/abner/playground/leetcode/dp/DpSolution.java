@@ -8,6 +8,65 @@ public class DpSolution {
         solution.minCostClimbingStairs(new int[]{10,15,20}); //ouput: 15
     }
 
+    //No.42 接雨水
+    public int trapByColumn(int[] height) {
+        int n = height.length;
+        int res = 0;
+        //按列求每列可接多少雨水，第0列和第n-1列无法接雨水，直接跳过
+        for(int i=1; i<n-1; i++){
+            //求i列左侧最高的列
+            int highestLeft = 0;
+            for(int l=0; l <i; l++){
+                highestLeft = Math.max(height[l], highestLeft);
+            }
+            //求i列右侧最高的列  (每轮都要算一遍左右两侧的最高列，可以用DP优化)
+            int highestRight =0;
+            for(int r=i+1; r <n; r++){
+                highestRight = Math.max(height[r], highestRight);
+            }
+
+            //求左右两个测最矮的列
+            int shorter = Math.min(highestLeft, highestRight);
+
+            //若i列高度小于矮列，则可接雨水 矮列高-i列高
+
+            if(height[i] < shorter) {
+                res += shorter - height[i];
+            }
+            //若i列高度大于等于矮列，则不可接雨水
+        }
+        return res;
+    }
+
+    public int trapDP(int[] height) {
+        int n = height.length;
+        int res = 0;
+
+        //max_left[i] 表示第i列左侧最高列
+        int[] max_left = new int[n];
+        max_left[0] = 0;
+        for(int i=1; i<n; i++){
+            max_left[i] = Math.max(max_left[i-1], height[i-1]);
+        }
+
+        //max_right[i] 表示第i列右侧最高列
+        int[] max_right = new int[n];
+        max_right[n-1] = 0;
+        for(int j=n-2; j>0; j--){
+            max_right[j] = Math.max(max_right[j+1], height[j+1]);
+        }
+
+        for(int i=1; i<n-1; i++){
+            int shorter = Math.min(max_left[i], max_right[i]);
+            //若i列高度小于矮列，则可接雨水 矮列高-i列高
+            if(height[i] < shorter) {
+                res += shorter - height[i];
+            }
+            //若i列高度大于等于矮列，则不可接雨水
+        }
+        return res;
+    }
+
     //No.279 完全平方数  给你一个整数 n ，返回 和为 n 的完全平方数的最少数量
     public int numSquares(int n) {
         //以15=9+4+1+1 为例， 这些数字，比如是[1, 根号下15]之前的取值 枚举这些数，假设当前枚举j，那么还需要凑i-j*j
