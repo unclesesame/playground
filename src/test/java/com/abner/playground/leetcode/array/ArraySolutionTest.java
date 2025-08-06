@@ -11,7 +11,7 @@ public class ArraySolutionTest {
     public void isPalindrome() {
         ArraySolution arraySolution = new ArraySolution();
        // Assertions.assertTrue(arraySolution.isPalindrome("A man, a plan, a canal: Panama"));
-        Assertions.assertTrue(arraySolution.isPalindrome("0P"));
+        Assertions.assertFalse(arraySolution.isPalindrome("0P"));
     }
 
     @Test
