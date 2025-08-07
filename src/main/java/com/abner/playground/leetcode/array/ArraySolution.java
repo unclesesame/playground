@@ -391,4 +391,92 @@ public class ArraySolution {
         }
         return x;
     }
+
+    //No.643 子数组最大平均数I
+    public double findMaxAverage(int[] nums, int k) {
+        //滑动窗口长度为k
+        int n = nums.length;
+        int sum = 0;
+        for(int i=0; i<k; i++){
+            sum += nums[i];
+        }
+        int maxSum = sum;
+        for (int i = k; i<=n; i++){
+            sum = sum - nums[i-k] + nums[i];
+            maxSum = Math.max(maxSum, sum);
+        }
+        return 1.0*maxSum/k;
+    }
+
+    //No.1456 定长子串中元音的最大数目
+    public int maxVowels(String s, int k) {
+        int n = s.length();
+        int vowel_cout = 0;
+        for(int i=0; i<k; i++){
+            vowel_cout += isVowel(s.charAt(i));
+        }
+        int ans = vowel_cout;
+        for(int i=k; i<n; i++){
+            vowel_cout += isVowel(s.charAt(i)) - isVowel(s.charAt(i-k));
+            ans = Math.max(ans, vowel_cout);
+        }
+        return ans;
+    }
+
+    private int isVowel(char c){
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' ? 1:0;
+    }
+
+    //No.1004 最大连续1的个数III
+    public int longestOnes(int[] nums, int k) {
+        int N = nums.length;
+        int res = 0;
+        //对于任意右端点right，希望找到最小的左端点left，使得left和right之间不超过k个0，即为最大长度
+        int left = 0, right = 0;
+        int zeros = 0;
+        while (right < N) {
+            //记录遍历过程遇到0的个数zeros,
+            if (nums[right] == 0)
+                zeros ++;
+            //如果zeros>k, 则记录之前0的个数等于k时的长度
+            //left要移动到满足left和right闭区间只有k个0
+            while (zeros > k) {
+                if (nums[left] == 0){
+                    zeros --;
+                }
+                left++;
+
+            }
+            res = Math.max(res, right - left + 1);
+            right ++;
+        }
+        return res;
+    }
+
+    //No.1493 删除一个元素以后全为1的最长子数组
+    public int longestSubarray(int[] nums) {
+        int n = nums.length;
+        int left = 0;
+        int right = 0;
+        int max = 0;
+        //用一个boolean型遍历标识窗口内是否有0
+        boolean hasZero = false;
+        //记录上一个0的位置，left始终在上一个0的位置右侧紧邻的下一个位置，1️以保证left尽量靠左，则right-left 越长
+        int lastZeroPos = 0;
+        while(right < n){
+            if(nums[right] == 0){
+                if(hasZero){
+                    left = lastZeroPos+1;
+                }else{
+                    hasZero = true;
+                }
+                lastZeroPos = right;
+            }
+            ////因为要删掉一个元素，所以这里没有用right-left+1
+            max = Math.max(max, right - left);
+            right++;
+        }
+
+        return max;
+    }
 }
